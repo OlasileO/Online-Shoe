@@ -5,7 +5,9 @@ VisualStudioVersion = 17.6.33815.320
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online-Shoe", "Online-Shoe\Online-Shoe.csproj", "{15B708D2-2039-470D-96B3-92DE17E66452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShoe.Model", "OnlineShoe.Model\OnlineShoe.Model.csproj", "{4534AE34-7A15-451E-BF38-024B047D6F66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShoe.Model", "OnlineShoe.Model\OnlineShoe.Model.csproj", "{4534AE34-7A15-451E-BF38-024B047D6F66}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShoe.Repository", "OnlineShoe.Repository\OnlineShoe.Repository.csproj", "{7DD78B39-FA8B-4537-B714-C45117628DEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{4534AE34-7A15-451E-BF38-024B047D6F66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4534AE34-7A15-451E-BF38-024B047D6F66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4534AE34-7A15-451E-BF38-024B047D6F66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
