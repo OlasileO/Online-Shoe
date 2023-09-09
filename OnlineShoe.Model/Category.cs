@@ -9,6 +9,7 @@ namespace OnlineShoe.Model
     public class Category
     {
         public int Id { get; set; }
-        public string? Name { get; set; }    
+        public string? Name { get; set; }
+        public ICollection<Shoe_Category> Shoe_Categories { get; set; }
     }
 }

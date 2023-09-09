@@ -8,8 +8,9 @@ namespace OnlineShoe.Model
 {
     public class Shoe_Category
     {
-        public int Id { get; set; }
-        public Shoe? Shoe_id { get; set; }
-        public Category? Category_id { get; set; }
+        public Shoe? Shoe { get; set; }
+        public int shoe_Id { get; set; }
+        public Category? Category{ get; set; }
+        public int Category_Id { get; set; }
     }
 }

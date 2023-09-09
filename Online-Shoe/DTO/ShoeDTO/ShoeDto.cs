@@ -2,6 +2,7 @@
 {
     public class ShoeDto
     {
+        public int Id { get; set; }
         public string? ShoeBrand { get; set; }
         public string? Model { get; set; }
         public string? Image { get; set; }

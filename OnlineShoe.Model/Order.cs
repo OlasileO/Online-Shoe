@@ -12,5 +12,6 @@ namespace OnlineShoe.Model
         public AppUser? User_id { get; set; }
         public int Total_order { get; set; }    
         public DateTime Order_date { get; set; }
+        public ICollection<Order_item> order_Items { get; set; }
     }
 }

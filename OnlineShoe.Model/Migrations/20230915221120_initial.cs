@@ -218,10 +218,10 @@ namespace OnlineShoe.Model.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Shoe_idId = table.Column<int>(type: "int", nullable: true),
+                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
                     User_idId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -233,8 +233,8 @@ namespace OnlineShoe.Model.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Shoe_Reviews_Shoes_Shoe_idId",
-                        column: x => x.Shoe_idId,
+                        name: "FK_Shoe_Reviews_Shoes_Shoe_Id",
+                        column: x => x.Shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id");
                 });
@@ -243,22 +243,20 @@ namespace OnlineShoe.Model.Migrations
                 name: "Shoes_Category",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Shoe_idId = table.Column<int>(type: "int", nullable: true),
-                    Category_idId = table.Column<int>(type: "int", nullable: true)
+                    shoe_Id = table.Column<int>(type: "int", nullable: false),
+                    Category_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shoes_Category", x => x.Id);
+                    table.PrimaryKey("PK_Shoes_Category", x => new { x.shoe_Id, x.Category_Id });
                     table.ForeignKey(
-                        name: "FK_Shoes_Category_Categories_Category_idId",
-                        column: x => x.Category_idId,
+                        name: "FK_Shoes_Category_Categories_Category_Id",
+                        column: x => x.Category_Id,
                         principalTable: "Categories",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Shoes_Category_Shoes_Shoe_idId",
-                        column: x => x.Shoe_idId,
+                        name: "FK_Shoes_Category_Shoes_shoe_Id",
+                        column: x => x.shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id");
                 });
@@ -269,8 +267,8 @@ namespace OnlineShoe.Model.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Order_idId = table.Column<int>(type: "int", nullable: true),
-                    Shoe_idId = table.Column<int>(type: "int", nullable: true),
+                    Order_Id = table.Column<int>(type: "int", nullable: false),
+                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
                     Total_price = table.Column<double>(type: "float", nullable: false)
                 },
@@ -278,13 +276,13 @@ namespace OnlineShoe.Model.Migrations
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_Order_idId",
-                        column: x => x.Order_idId,
+                        name: "FK_OrderItems_Orders_Order_Id",
+                        column: x => x.Order_Id,
                         principalTable: "Orders",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_OrderItems_Shoes_Shoe_idId",
-                        column: x => x.Shoe_idId,
+                        name: "FK_OrderItems_Shoes_Shoe_Id",
+                        column: x => x.Shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id");
                 });
@@ -329,14 +327,14 @@ namespace OnlineShoe.Model.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_Order_idId",
+                name: "IX_OrderItems_Order_Id",
                 table: "OrderItems",
-                column: "Order_idId");
+                column: "Order_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_Shoe_idId",
+                name: "IX_OrderItems_Shoe_Id",
                 table: "OrderItems",
-                column: "Shoe_idId");
+                column: "Shoe_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_User_idId",
@@ -344,9 +342,9 @@ namespace OnlineShoe.Model.Migrations
                 column: "User_idId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shoe_Reviews_Shoe_idId",
+                name: "IX_Shoe_Reviews_Shoe_Id",
                 table: "Shoe_Reviews",
-                column: "Shoe_idId");
+                column: "Shoe_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shoe_Reviews_User_idId",
@@ -354,14 +352,9 @@ namespace OnlineShoe.Model.Migrations
                 column: "User_idId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shoes_Category_Category_idId",
+                name: "IX_Shoes_Category_Category_Id",
                 table: "Shoes_Category",
-                column: "Category_idId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shoes_Category_Shoe_idId",
-                table: "Shoes_Category",
-                column: "Shoe_idId");
+                column: "Category_Id");
         }
 
         /// <inheritdoc />

@@ -10,7 +10,8 @@ namespace OnlineShoe.Model
     public class Shoe_Review
     {
         public int Id { get; set; } 
-        public Shoe? Shoe_id { get; set; }   
+        public Shoe? Shoe { get; set; }   
+        public int Shoe_Id { get; set; }
         public AppUser? User_id { get; set; }
         public int Rating { get; set; } 
         public string? Comment { get; set; } 
