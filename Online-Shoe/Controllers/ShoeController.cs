@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Online_Shoe.DTO.ShoeDTO;
 using OnlineShoe.Model;
 using OnlineShoe.Repository.Abstract;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace Online_Shoe.Controllers
 {
@@ -12,28 +12,42 @@ namespace Online_Shoe.Controllers
     public class ShoeController : ControllerBase
     {
         private readonly IShoeRepository _shoeRepository;
+        private readonly IMapper _mapper;
+        private readonly ILogger<ShoeController> _logger;
 
-        public ShoeController(IShoeRepository shoeRepository)
+        public ShoeController(IShoeRepository shoeRepository, IMapper mapper, 
+            ILogger<ShoeController> logger)
         {
             _shoeRepository = shoeRepository;
+            _mapper = mapper;
+            _logger = logger;
         }
 
         // GET: api/<ShoeController>
         [HttpGet]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
         public async Task<IEnumerable<ShoeDto>> GetAll()
         {
             var shoes = await _shoeRepository.GetAll();
-            return shoes;
+            var result =  _mapper.Map<List<ShoeDto>>(shoes);
+            return result;
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddShoe([FromBody] CreateShoeDto shoe)
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(500)]
+        public async Task<IActionResult> AddShoe([FromBody] CreateShoeDto shoeCreate)
         {
             if (!ModelState.IsValid)
             {
+                _logger.LogError($"Invalid Post Attempt{nameof(AddShoe)}");
                 return BadRequest(ModelState);
             }
-            var result  = await _shoeRepository.AddAsync(shoe);
+            var shoeDTO = _mapper.Map<Shoe>(shoeCreate);
+             await _shoeRepository.AddAsync(shoeDTO);
             return Ok("Successfully");
         }
 
