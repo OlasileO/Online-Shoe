@@ -26,7 +26,10 @@ namespace Online_Shoe.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-
+        /// <summary>
+        /// /
+        /// </summary>
+        /// <returns></returns>
         // GET: api/<ShoeCategoryController>
         [HttpGet]
         [ProducesResponseType(200)]
