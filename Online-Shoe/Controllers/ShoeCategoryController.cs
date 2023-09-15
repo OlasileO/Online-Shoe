@@ -38,22 +38,8 @@ namespace Online_Shoe.Controllers
             var result = _mapper.Map<List<Shoe_CategoryDto>>(shoe_Categories);
             return result;
         }
-        //nnnnn
-        // GET api/<ShoeCategoryController>/5
-        //[HttpGet("{id}")]
-        //[ProducesResponseType(200)]
-        //[ProducesResponseType(400)]
-        //[ProducesResponseType(500)]
-        //public async Task<IActionResult> GetById(int id)
-        //{
-        //    var shoe_Categories = await _shoecategoryRepository.GetById(id);
-        //    if (shoe_Categories == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    var result = _mapper.Map<Shoe_CategoryDto>(shoe_Categories);
-        //    return Ok(result);
-        //}
+        
+     
 
         // POST api/<ShoeCategoryController>
         [HttpPost]
