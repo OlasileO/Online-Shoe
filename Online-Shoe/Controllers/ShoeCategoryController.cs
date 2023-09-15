@@ -38,7 +38,7 @@ namespace Online_Shoe.Controllers
             var result = _mapper.Map<List<Shoe_CategoryDto>>(shoe_Categories);
             return result;
         }
-
+        //nnnnn
         // GET api/<ShoeCategoryController>/5
         //[HttpGet("{id}")]
         //[ProducesResponseType(200)]
