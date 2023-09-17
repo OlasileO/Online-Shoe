@@ -26,7 +26,7 @@ namespace Online_Shoe.Controllers
             _mapper = mapper;
             _logger = logger;
         }
-        /// <summary>
+        //<summary>
         /// /
         /// </summary>
         /// <returns></returns>
