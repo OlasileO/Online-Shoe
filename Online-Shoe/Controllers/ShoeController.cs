@@ -31,6 +31,7 @@ namespace Online_Shoe.Controllers
         public async Task<IEnumerable<ShoeDto>> GetAll()
         {
             var shoes = await _shoeRepository.GetAll();
+<<<<<<< HEAD
             var result = _mapper.Map<List<ShoeDto>>(shoes);
             return result;
         }
@@ -47,6 +48,10 @@ namespace Online_Shoe.Controllers
             }
             var result = _mapper.Map<ShoeDto>(shoes);
             return Ok(result);
+=======
+            var result =  _mapper.Map<List<ShoeDto>>(shoes);
+            return result;
+>>>>>>> 9130bbaf77307dbb0ddecfb96e8635117c969e17
         }
 
         [HttpPost]
@@ -61,7 +66,11 @@ namespace Online_Shoe.Controllers
                 return BadRequest(ModelState);
             }
             var shoeDTO = _mapper.Map<Shoe>(shoeCreate);
+<<<<<<< HEAD
             await _shoeRepository.AddAsync(shoeDTO);
+=======
+             await _shoeRepository.AddAsync(shoeDTO);
+>>>>>>> 9130bbaf77307dbb0ddecfb96e8635117c969e17
             return Ok("Successfully");
         }
 
