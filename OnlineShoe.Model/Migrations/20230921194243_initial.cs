@@ -66,27 +66,6 @@ namespace OnlineShoe.Model.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shoes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ShoeBrand = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Model = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Price = table.Column<double>(type: "float", nullable: false),
-                    Size = table.Column<int>(type: "int", nullable: false),
-                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Created_At = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Updated_At = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shoes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -213,51 +192,28 @@ namespace OnlineShoe.Model.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shoe_Reviews",
+                name: "Shoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
-                    User_idId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    ShoeBrand = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CategoryId = table.Column<int>(type: "int", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Price = table.Column<double>(type: "float", nullable: false),
+                    Size = table.Column<int>(type: "int", nullable: false),
+                    Color = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Created_At = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated_At = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shoe_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_Shoes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shoe_Reviews_AspNetUsers_User_idId",
-                        column: x => x.User_idId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Shoe_Reviews_Shoes_Shoe_Id",
-                        column: x => x.Shoe_Id,
-                        principalTable: "Shoes",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Shoes_Category",
-                columns: table => new
-                {
-                    shoe_Id = table.Column<int>(type: "int", nullable: false),
-                    Category_Id = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Shoes_Category", x => new { x.shoe_Id, x.Category_Id });
-                    table.ForeignKey(
-                        name: "FK_Shoes_Category_Categories_Category_Id",
-                        column: x => x.Category_Id,
+                        name: "FK_Shoes_Categories_CategoryId",
+                        column: x => x.CategoryId,
                         principalTable: "Categories",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Shoes_Category_Shoes_shoe_Id",
-                        column: x => x.shoe_Id,
-                        principalTable: "Shoes",
                         principalColumn: "Id");
                 });
 
@@ -282,6 +238,33 @@ namespace OnlineShoe.Model.Migrations
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_OrderItems_Shoes_Shoe_Id",
+                        column: x => x.Shoe_Id,
+                        principalTable: "Shoes",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shoe_Reviews",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
+                    User_idId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Rating = table.Column<int>(type: "int", nullable: false),
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shoe_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shoe_Reviews_AspNetUsers_User_idId",
+                        column: x => x.User_idId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Shoe_Reviews_Shoes_Shoe_Id",
                         column: x => x.Shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id");
@@ -352,9 +335,9 @@ namespace OnlineShoe.Model.Migrations
                 column: "User_idId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shoes_Category_Category_Id",
-                table: "Shoes_Category",
-                column: "Category_Id");
+                name: "IX_Shoes_CategoryId",
+                table: "Shoes",
+                column: "CategoryId");
         }
 
         /// <inheritdoc />
@@ -382,22 +365,19 @@ namespace OnlineShoe.Model.Migrations
                 name: "Shoe_Reviews");
 
             migrationBuilder.DropTable(
-                name: "Shoes_Category");
-
-            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
-                name: "Categories");
-
-            migrationBuilder.DropTable(
                 name: "Shoes");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Categories");
         }
     }
 }

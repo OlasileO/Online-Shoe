@@ -4,7 +4,7 @@
     {
         public int Id { get; set; }
         public string? ShoeBrand { get; set; }
-        public string? Model { get; set; }
+        public int? CategoryId { get; set; }
         public string? Image { get; set; }
         public double Price { get; set; }
         public int Size { get; set; }

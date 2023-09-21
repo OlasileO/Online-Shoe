@@ -20,28 +20,12 @@ namespace OnlineShoe.Model.Data
         public DbSet<Order> Orders { get; set; }
         public DbSet<Order_item> OrderItems { get; set; }
         public DbSet<Shoe> Shoes { get; set; }
-        public DbSet<Shoe_Category> Shoes_Category { get; set; }
         public DbSet<Shoe_Review> Shoe_Reviews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Shoe_Category>(entity =>
-            {
-                entity.HasKey(sc=> new { sc.shoe_Id, sc.Category_Id});
-
-                entity.HasOne(s => s.Shoe)
-                .WithMany(sc => sc.Shoe_Categories)
-                .HasForeignKey(s => s.shoe_Id)
-                .OnDelete(DeleteBehavior.NoAction);
-
-                entity.HasOne(c => c.Category)
-               .WithMany(sc => sc.Shoe_Categories)
-               .HasForeignKey(c => c.Category_Id)
-               .OnDelete(DeleteBehavior.NoAction);
-
-            });
-
+          
             modelBuilder.Entity<Shoe_Review>(entity => {
 
                 entity.HasKey(s => s.Id);

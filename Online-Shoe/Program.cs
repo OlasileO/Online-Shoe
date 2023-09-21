@@ -23,7 +23,6 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddScoped<IShoeRepository, ShoeRepository>();
 builder.Services.AddScoped<IcategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IShoe_CategoryRepository, Shoe_CategoryRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

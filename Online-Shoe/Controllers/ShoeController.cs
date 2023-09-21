@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Online_Shoe.DTO.ShoeDTO;
 using OnlineShoe.Model;
 using OnlineShoe.Repository.Abstract;
@@ -30,8 +31,8 @@ namespace Online_Shoe.Controllers
         [ProducesResponseType(500)]
         public async Task<IEnumerable<ShoeDto>> GetAll()
         {
-            var shoes = await _shoeRepository.GetAll();
-<<<<<<< HEAD
+            var shoes = await _shoeRepository.GetAll(include: c => c.Include(x => x.Category));
+            
             var result = _mapper.Map<List<ShoeDto>>(shoes);
             return result;
         }
@@ -48,10 +49,6 @@ namespace Online_Shoe.Controllers
             }
             var result = _mapper.Map<ShoeDto>(shoes);
             return Ok(result);
-=======
-            var result =  _mapper.Map<List<ShoeDto>>(shoes);
-            return result;
->>>>>>> 9130bbaf77307dbb0ddecfb96e8635117c969e17
         }
 
         [HttpPost]
@@ -66,11 +63,8 @@ namespace Online_Shoe.Controllers
                 return BadRequest(ModelState);
             }
             var shoeDTO = _mapper.Map<Shoe>(shoeCreate);
-<<<<<<< HEAD
             await _shoeRepository.AddAsync(shoeDTO);
-=======
-             await _shoeRepository.AddAsync(shoeDTO);
->>>>>>> 9130bbaf77307dbb0ddecfb96e8635117c969e17
+
             return Ok("Successfully");
         }
 

@@ -1,9 +1,11 @@
-﻿namespace Online_Shoe.DTO.ShoeDTO
+﻿using Online_Shoe.DTO.CategoryDTO;
+namespace Online_Shoe.DTO.ShoeDTO
 {
     public class ShoeDto
     {
         public int Id { get; set; }
-        public string? ShoeBrand { get; set; }
+        public int? CategoryId { get; set; }
+        //public CategoryDTo? CategoryDTO { get; set; }
         public string? Model { get; set; }
         public string? Image { get; set; }
         public double Price { get; set; }

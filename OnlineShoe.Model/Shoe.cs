@@ -10,7 +10,8 @@ namespace OnlineShoe.Model
     {
         public int Id { get; set; }
         public string? ShoeBrand { get; set; }
-        public string? Model { get; set; }   
+        public Category Category { get; set; }
+        public int? CategoryId { get; set; } 
         public string? Image { get; set; }
         public double Price { get; set; }
         public int Size { get; set; }
@@ -19,7 +20,6 @@ namespace OnlineShoe.Model
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get;set; }
         public ICollection<Shoe_Review> Reviews { get; set; }
-        public ICollection<Shoe_Category> Shoe_Categories { get; set; }
         public ICollection<Order_item> Order_Items { get; set; }
     }
 }
