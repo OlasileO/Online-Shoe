@@ -2,6 +2,7 @@
 using Online_Shoe.DTO.Category;
 using Online_Shoe.DTO.CategoryDTO;
 using Online_Shoe.DTO.ShoeDTO;
+using Online_Shoe.DTO.ShoeReviewDTO;
 using OnlineShoe.Model;
 
 namespace Online_Shoe.Helper
@@ -19,8 +20,9 @@ namespace Online_Shoe.Helper
             CreateMap<Category, CreateCategoryDto>().ReverseMap();
             CreateMap<Category, UpdateCategoryDto>().ReverseMap();
 
-
-            
+            //ShoeReview
+            CreateMap<Shoe_Review,ShoeReviewCreateDto>().ReverseMap();
+            CreateMap<Shoe_Review, ShoeReviewDto>().ReverseMap();
         }
     }
 }

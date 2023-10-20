@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShoe.Model.Migrations
 {
     /// <inheritdoc />
-    public partial class initial : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,6 +32,10 @@ namespace OnlineShoe.Model.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FristName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    isActive = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -250,7 +254,7 @@ namespace OnlineShoe.Model.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Shoe_Id = table.Column<int>(type: "int", nullable: false),
-                    User_idId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AppuserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -259,8 +263,8 @@ namespace OnlineShoe.Model.Migrations
                 {
                     table.PrimaryKey("PK_Shoe_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shoe_Reviews_AspNetUsers_User_idId",
-                        column: x => x.User_idId,
+                        name: "FK_Shoe_Reviews_AspNetUsers_AppuserId",
+                        column: x => x.AppuserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -325,14 +329,14 @@ namespace OnlineShoe.Model.Migrations
                 column: "User_idId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Shoe_Reviews_AppuserId",
+                table: "Shoe_Reviews",
+                column: "AppuserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Shoe_Reviews_Shoe_Id",
                 table: "Shoe_Reviews",
                 column: "Shoe_Id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shoe_Reviews_User_idId",
-                table: "Shoe_Reviews",
-                column: "User_idId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shoes_CategoryId",

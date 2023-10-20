@@ -1,9 +1,12 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using OnlineShoe.Model;
 using OnlineShoe.Model.Data;
 using OnlineShoe.Repository.Abstract;
 using OnlineShoe.Repository.Implementation;
+using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +18,7 @@ builder.Services.AddDbContext<ShoeDbContext>(options => options.UseSqlServer(
 builder.Configuration.GetConnectionString("conn")));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<ShoeDbContext>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers().AddJsonOptions(x =>
 {
@@ -23,8 +27,41 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddScoped<IShoeRepository, ShoeRepository>();
 builder.Services.AddScoped<IcategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IShoeReview, ShoeReview>();
+builder.Services.AddScoped<IAuthRepo, AuthRepo>();
+
+//Adding Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+//Adding  JwtBearer
+ .AddJwtBearer(options =>
+ {
+     options.SaveToken = true;
+     options.RequireHttpsMetadata = false;
+     options.TokenValidationParameters = new TokenValidationParameters()
+     {
+         ValidateIssuer = true,
+         ValidateAudience = true,
+         ValidateLifetime = true,
+         ValidateIssuerSigningKey = true,
+         ValidAudience = builder.Configuration["JWTKey:ValidAudience"],
+         ValidIssuer = builder.Configuration["JWTKey:ValidIssuer"],
+         ClockSkew = TimeSpan.Zero,
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]))
+     };
+ });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+      a => a.AllowAnyHeader().AllowAnyOrigin().AllowAnyMethod());
+
+});
 
 var app = builder.Build();
 
@@ -34,11 +71,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseCors("AllowAll");
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

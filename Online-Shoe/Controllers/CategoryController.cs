@@ -2,10 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Online_Shoe.DTO.Category;
 using Online_Shoe.DTO.CategoryDTO;
-using Online_Shoe.DTO.ShoeDTO;
 using OnlineShoe.Model;
 using OnlineShoe.Repository.Abstract;
-using OnlineShoe.Repository.Implementation;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -46,12 +44,12 @@ namespace Online_Shoe.Controllers
         [ProducesResponseType(500)]
         public async Task<IActionResult> GetById(int id)
         {
-            var shoes = await _categoryRepository.GetById(id);
-            if (shoes == null)
+            var category = await _categoryRepository.GetById(id);
+            if (category == null)
             {
                 return NotFound();
             }
-            var result = _mapper.Map<CategoryDTo>(shoes);
+            var result = _mapper.Map<CategoryDTo>(category);
             return Ok(result);
         }
 
