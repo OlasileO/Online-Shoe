@@ -4,9 +4,9 @@ namespace OnlineShoe.Repository.Abstract
 {
     public interface IAuthRepo
     {
-        Task<(int, string)> Registration(Register register, string role);
-        Task<Token> Login(Login login);
-        Task<Token> GetRefreshToken(TokenRefresh requestToken);
+        Task<RegistrationResponse> Registration(Register register, string role);
+        Task<AuthResponse> Login(Login login);
+       
 
     }
 }

@@ -30,10 +30,8 @@ namespace Online_Shoe.Controllers
                     return BadRequest(ModelState);
 
                 var result = await _authRepo.Login(model);
+               return Ok(result); 
                 
-                if (result.StatusCode == 0)
-                    return BadRequest(result.StatusMessage);
-                return Ok(result);
             }
             catch (Exception ex)
             {
@@ -52,10 +50,8 @@ namespace Online_Shoe.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                var (status, message) = await _authRepo.Registration(model, UserRoles.User);
-                if (status == 0)
-                    return BadRequest(message);
-                return CreatedAtAction(nameof(Register), model);
+                return Ok( await _authRepo.Registration(model, UserRoles.User));
+            
             }
             catch (Exception ex)
             {
@@ -63,29 +59,6 @@ namespace Online_Shoe.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
 
-        }
-
-        [HttpPost]
-        [Route("refreshToken")]
-        public async Task<IActionResult> RefreshToken(TokenRefresh model)
-        {
-            try
-            {
-                if (model == null)
-                    return BadRequest("Invalid BadRequest");
-                var result = await _authRepo.GetRefreshToken(model);
-                if (result.StatusCode == 0)
-                    return BadRequest(result.StatusMessage);
-                return Ok(result);
-
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-       
+        
     }
 }

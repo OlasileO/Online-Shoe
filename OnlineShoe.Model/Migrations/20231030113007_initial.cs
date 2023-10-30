@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OnlineShoe.Model.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,9 +33,6 @@ namespace OnlineShoe.Model.Migrations
                     FristName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    isActive = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -67,6 +64,21 @@ namespace OnlineShoe.Model.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Orders",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    User_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Total_order = table.Column<int>(type: "int", nullable: false),
+                    Order_date = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,26 +188,6 @@ namespace OnlineShoe.Model.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    User_idId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    Total_order = table.Column<int>(type: "int", nullable: false),
-                    Order_date = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_AspNetUsers_User_idId",
-                        column: x => x.User_idId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Shoes",
                 columns: table => new
                 {
@@ -254,7 +246,7 @@ namespace OnlineShoe.Model.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Shoe_Id = table.Column<int>(type: "int", nullable: false),
-                    AppuserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    userId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -263,15 +255,32 @@ namespace OnlineShoe.Model.Migrations
                 {
                     table.PrimaryKey("PK_Shoe_Reviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shoe_Reviews_AspNetUsers_AppuserId",
-                        column: x => x.AppuserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Shoe_Reviews_Shoes_Shoe_Id",
                         column: x => x.Shoe_Id,
                         principalTable: "Shoes",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ShoppingCarts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    shodId = table.Column<int>(type: "int", nullable: false),
+                    ShoeId = table.Column<int>(type: "int", nullable: false),
+                    Quatity = table.Column<int>(type: "int", nullable: false),
+                    shoppingId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ShoppingCarts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ShoppingCarts_Shoes_ShoeId",
+                        column: x => x.ShoeId,
+                        principalTable: "Shoes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -324,16 +333,6 @@ namespace OnlineShoe.Model.Migrations
                 column: "Shoe_Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_User_idId",
-                table: "Orders",
-                column: "User_idId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Shoe_Reviews_AppuserId",
-                table: "Shoe_Reviews",
-                column: "AppuserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Shoe_Reviews_Shoe_Id",
                 table: "Shoe_Reviews",
                 column: "Shoe_Id");
@@ -342,6 +341,11 @@ namespace OnlineShoe.Model.Migrations
                 name: "IX_Shoes_CategoryId",
                 table: "Shoes",
                 column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ShoppingCarts_ShoeId",
+                table: "ShoppingCarts",
+                column: "ShoeId");
         }
 
         /// <inheritdoc />
@@ -369,16 +373,19 @@ namespace OnlineShoe.Model.Migrations
                 name: "Shoe_Reviews");
 
             migrationBuilder.DropTable(
+                name: "ShoppingCarts");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Shoes");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Categories");

@@ -1,11 +1,15 @@
+using IdentityModel;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Online_Shoe.Service;
 using OnlineShoe.Model;
 using OnlineShoe.Model.Data;
 using OnlineShoe.Repository.Abstract;
 using OnlineShoe.Repository.Implementation;
+
 using System.Text;
 using System.Text.Json.Serialization;
 
@@ -28,7 +32,10 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 builder.Services.AddScoped<IShoeRepository, ShoeRepository>();
 builder.Services.AddScoped<IcategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IShoeReview, ShoeReview>();
+builder.Services.AddScoped<IorderRepository, OrderRepository>();
 builder.Services.AddScoped<IAuthRepo, AuthRepo>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sc => Shoppingcart.GetShoppingCart(sc));
 
 //Adding Authentication
 builder.Services.AddAuthentication(options =>
@@ -43,7 +50,8 @@ builder.Services.AddAuthentication(options =>
      options.SaveToken = true;
      options.RequireHttpsMetadata = false;
      options.TokenValidationParameters = new TokenValidationParameters()
-     {
+     {    
+        
          ValidateIssuer = true,
          ValidateAudience = true,
          ValidateLifetime = true,
@@ -51,9 +59,17 @@ builder.Services.AddAuthentication(options =>
          ValidAudience = builder.Configuration["JWTKey:ValidAudience"],
          ValidIssuer = builder.Configuration["JWTKey:ValidIssuer"],
          ClockSkew = TimeSpan.Zero,
-         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]))
+         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]!))
      };
  });
+//builder.Services.AddMemoryCache();
+//builder.Services.AddSession(option =>
+//{
+//    option.IdleTimeout = TimeSpan.Zero;
+//    option.Cookie.HttpOnly = true;
+//    option.Cookie.IsEssential = true;
+//});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCors(options =>
@@ -63,7 +79,9 @@ builder.Services.AddCors(options =>
 
 });
 
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -73,7 +91,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();
+
+

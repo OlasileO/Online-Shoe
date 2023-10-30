@@ -209,12 +209,6 @@ namespace OnlineShoe.Model.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -224,9 +218,6 @@ namespace OnlineShoe.Model.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("isActive")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -271,12 +262,11 @@ namespace OnlineShoe.Model.Migrations
                     b.Property<int>("Total_order")
                         .HasColumnType("int");
 
-                    b.Property<string>("User_idId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("User_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("User_idId");
 
                     b.ToTable("Orders");
                 });
@@ -360,9 +350,6 @@ namespace OnlineShoe.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppuserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -376,13 +363,43 @@ namespace OnlineShoe.Model.Migrations
                     b.Property<int>("Shoe_Id")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.Property<string>("userId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("AppuserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Shoe_Id");
 
                     b.ToTable("Shoe_Reviews");
+                });
+
+            modelBuilder.Entity("OnlineShoe.Model.ShoppingCart", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Quatity")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ShoeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("shodId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("shoppingId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ShoeId");
+
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -436,15 +453,6 @@ namespace OnlineShoe.Model.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.Order", b =>
-                {
-                    b.HasOne("OnlineShoe.Model.AppUser", "User_id")
-                        .WithMany()
-                        .HasForeignKey("User_idId");
-
-                    b.Navigation("User_id");
-                });
-
             modelBuilder.Entity("OnlineShoe.Model.Order_item", b =>
                 {
                     b.HasOne("OnlineShoe.Model.Order", "Order")
@@ -475,17 +483,22 @@ namespace OnlineShoe.Model.Migrations
 
             modelBuilder.Entity("OnlineShoe.Model.Shoe_Review", b =>
                 {
-                    b.HasOne("OnlineShoe.Model.AppUser", "Appuser")
-                        .WithMany()
-                        .HasForeignKey("AppuserId");
-
                     b.HasOne("OnlineShoe.Model.Shoe", "Shoe")
                         .WithMany("Reviews")
                         .HasForeignKey("Shoe_Id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Appuser");
+                    b.Navigation("Shoe");
+                });
+
+            modelBuilder.Entity("OnlineShoe.Model.ShoppingCart", b =>
+                {
+                    b.HasOne("OnlineShoe.Model.Shoe", "Shoe")
+                        .WithMany()
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Shoe");
                 });

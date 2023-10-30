@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Model
 {
-    public  class TokenRefresh
+    public class RegistrationResponse
     {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
+        public string UserId {  get; set; }
     }
 }
