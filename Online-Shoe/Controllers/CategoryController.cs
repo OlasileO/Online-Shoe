@@ -90,6 +90,7 @@ namespace Online_Shoe.Controllers
             }
             _mapper.Map(updateCategory, category);
             await _categoryRepository.UpdateAsync(category);
+           
             return Ok("Successfully");
         }
 

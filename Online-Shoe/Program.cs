@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Online_Shoe.Service;
 using OnlineShoe.Model;
@@ -36,6 +37,8 @@ builder.Services.AddScoped<IorderRepository, OrderRepository>();
 builder.Services.AddScoped<IAuthRepo, AuthRepo>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped(sc => Shoppingcart.GetShoppingCart(sc));
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSender"));
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 //Adding Authentication
 builder.Services.AddAuthentication(options =>
