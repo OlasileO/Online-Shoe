@@ -1,8 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Linq;
+using Online_Shoe.DTO.PasswordReset;
+using Online_Shoe.DTO.PasswordResetDTO;
 using OnlineShoe.Model;
 using OnlineShoe.Repository.Abstract;
 using OnlineShoe.Repository.Implementation;
+using System.Net.Mail;
 
 namespace Online_Shoe.Controllers
 {
@@ -92,5 +96,56 @@ namespace Online_Shoe.Controllers
 
 
         }
+
+        [HttpPost("forgetpassword")]
+        public async Task<IActionResult> ForgetPassword( ForgetPasswordDTO model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.EmailAdrress);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var code = await _userManager.GeneratePasswordResetTokenAsync( user);
+            var callbackurl = Url.Action("ResetPassword", "Authentication", 
+                new { email = user.Email, code = code }, protocol: Request.Scheme);
+
+            string emailSubject = "Password Reset";
+            string username = user.FristName + " " + user.LastName;
+            string emailMessage = "Dear " + username + "\n" +
+                "We received your password reset request.\n" +
+                "Please copy the following token and paste it in the Password Reset Form:\n" +
+            callbackurl + "\n\n" +
+                "Best Regards\n";
+
+
+            await _emailSender.SendEmail(emailSubject, model.EmailAdrress, username, emailMessage);
+            return Ok();
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword(ResetPasswordDTO resetPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.FindByEmailAsync(resetPasswordDTO.EmailAdrress);
+            if (user == null)
+            {
+                ModelState.AddModelError(resetPasswordDTO.EmailAdrress,"User not Found");
+                return BadRequest(ModelState);
+            }
+            var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            var result = await _userManager.ResetPasswordAsync(user, resetToken, resetPasswordDTO.Password);
+            if (result.Succeeded)
+            {
+                return Ok("Password Reset Complete");
+            }
+
+            return Ok ();
+        }
+
+
     }
 }
