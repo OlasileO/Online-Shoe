@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Repository.Implementation
 {
-    public class ShoeReview : GenericRepository<Shoe_Review>,IShoeReview
+    public class ShoeReviewRepository : GenericRepository<Model.ShoeReview>,IShoeReview
     {
         private readonly ShoeDbContext _Context;
 
-        public ShoeReview(ShoeDbContext context):base(context)
+        public ShoeReviewRepository(ShoeDbContext context):base(context)
         {
             _Context = context;
         }

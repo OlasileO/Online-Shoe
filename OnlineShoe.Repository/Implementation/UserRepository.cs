@@ -1,12 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using OnlineShoe.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OnlineShoe.Repository.Implementation
 {
@@ -22,7 +17,7 @@ namespace OnlineShoe.Repository.Implementation
             _contextAccessor = contextAccessor;
         }
 
-        public string UserId { get => _contextAccessor.HttpContext?.User?.FindFirstValue("uid")!; }
+        public  string UserId { get => _contextAccessor.HttpContext?.User?.FindFirstValue("uid")!; }
 
         public static string GetUserId(ClaimsPrincipal user)
         {
@@ -42,5 +37,7 @@ namespace OnlineShoe.Repository.Implementation
 
             return claim.Value; ;
         }
+
+       
     }
 }

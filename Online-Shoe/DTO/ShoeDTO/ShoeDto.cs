@@ -5,7 +5,6 @@ namespace Online_Shoe.DTO.ShoeDTO
     {
         public int Id { get; set; }
         public int? CategoryId { get; set; }
-        //public CategoryDTo? CategoryDTO { get; set; }
         public string? Model { get; set; }
         public string? Image { get; set; }
         public double Price { get; set; }

@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Model
 {
-    public class Shoe_Review
+    public class ShoeReview
     {
         public int Id { get; set; } 
         public Shoe? Shoe { get; set; }   
-        public int Shoe_Id { get; set; }
+        public int ShoeId { get; set; }
         public string userId { get; set; }
         public int Rating { get; set; } 
         public string? Comment { get; set; } 
-        public DateTime Created_at { get; set; }    
+        public DateTime Createdat { get; set; }    
     }
 }

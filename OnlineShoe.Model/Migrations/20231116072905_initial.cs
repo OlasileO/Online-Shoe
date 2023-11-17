@@ -72,8 +72,7 @@ namespace OnlineShoe.Model.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    User_id = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Total_order = table.Column<int>(type: "int", nullable: false),
+                    Userid = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Order_date = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -219,46 +218,49 @@ namespace OnlineShoe.Model.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Order_Id = table.Column<int>(type: "int", nullable: false),
-                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ShoeId = table.Column<int>(type: "int", nullable: false),
                     quantity = table.Column<int>(type: "int", nullable: false),
-                    Total_price = table.Column<double>(type: "float", nullable: false)
+                    Totalprice = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrderItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Orders_Order_Id",
-                        column: x => x.Order_Id,
+                        name: "FK_OrderItems_Orders_OrderId",
+                        column: x => x.OrderId,
                         principalTable: "Orders",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_OrderItems_Shoes_Shoe_Id",
-                        column: x => x.Shoe_Id,
+                        name: "FK_OrderItems_Shoes_ShoeId",
+                        column: x => x.ShoeId,
                         principalTable: "Shoes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Shoe_Reviews",
+                name: "ShoeReviews",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Shoe_Id = table.Column<int>(type: "int", nullable: false),
+                    ShoeId = table.Column<int>(type: "int", nullable: false),
                     userId = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Rating = table.Column<int>(type: "int", nullable: false),
-                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Created_at = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Comment = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Createdat = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Shoe_Reviews", x => x.Id);
+                    table.PrimaryKey("PK_ShoeReviews", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Shoe_Reviews_Shoes_Shoe_Id",
-                        column: x => x.Shoe_Id,
+                        name: "FK_ShoeReviews_Shoes_ShoeId",
+                        column: x => x.ShoeId,
                         principalTable: "Shoes",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -267,8 +269,7 @@ namespace OnlineShoe.Model.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    shodId = table.Column<int>(type: "int", nullable: false),
-                    ShoeId = table.Column<int>(type: "int", nullable: false),
+                    ShoeId = table.Column<int>(type: "int", nullable: true),
                     Quatity = table.Column<int>(type: "int", nullable: false),
                     shoppingId = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -279,8 +280,7 @@ namespace OnlineShoe.Model.Migrations
                         name: "FK_ShoppingCarts_Shoes_ShoeId",
                         column: x => x.ShoeId,
                         principalTable: "Shoes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
@@ -323,19 +323,19 @@ namespace OnlineShoe.Model.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_Order_Id",
+                name: "IX_OrderItems_OrderId",
                 table: "OrderItems",
-                column: "Order_Id");
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OrderItems_Shoe_Id",
+                name: "IX_OrderItems_ShoeId",
                 table: "OrderItems",
-                column: "Shoe_Id");
+                column: "ShoeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Shoe_Reviews_Shoe_Id",
-                table: "Shoe_Reviews",
-                column: "Shoe_Id");
+                name: "IX_ShoeReviews_ShoeId",
+                table: "ShoeReviews",
+                column: "ShoeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Shoes_CategoryId",
@@ -370,7 +370,7 @@ namespace OnlineShoe.Model.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
-                name: "Shoe_Reviews");
+                name: "ShoeReviews");
 
             migrationBuilder.DropTable(
                 name: "ShoppingCarts");

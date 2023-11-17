@@ -19,7 +19,7 @@ namespace OnlineShoe.Model
         public string? Description { get; set; }
         public DateTime Created_At { get; set; }
         public DateTime Updated_At { get;set; }
-        public ICollection<Shoe_Review> Reviews { get; set; }
-        public ICollection<Order_item> Order_Items { get; set; }
+        public ICollection<ShoeReview> Reviews { get; set; }
+        public ICollection<Orderitem> Order_Items { get; set; }
     }
 }

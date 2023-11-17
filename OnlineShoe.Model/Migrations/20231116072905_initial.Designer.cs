@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OnlineShoe.Model.Data;
 
@@ -11,9 +12,11 @@ using OnlineShoe.Model.Data;
 namespace OnlineShoe.Model.Migrations
 {
     [DbContext(typeof(ShoeDbContext))]
-    partial class ShoeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231116072905_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -261,11 +264,9 @@ namespace OnlineShoe.Model.Migrations
 
                     b.Property<string>("Userid")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Userid");
 
                     b.ToTable("Orders");
                 });
@@ -446,17 +447,6 @@ namespace OnlineShoe.Model.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("OnlineShoe.Model.Order", b =>
-                {
-                    b.HasOne("OnlineShoe.Model.AppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("Userid")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("OnlineShoe.Model.Orderitem", b =>

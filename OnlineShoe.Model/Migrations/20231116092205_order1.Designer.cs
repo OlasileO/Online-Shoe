@@ -12,8 +12,8 @@ using OnlineShoe.Model.Data;
 namespace OnlineShoe.Model.Migrations
 {
     [DbContext(typeof(ShoeDbContext))]
-    [Migration("20231030113007_initial")]
-    partial class initial
+    [Migration("20231116092205_order1")]
+    partial class order1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -259,22 +259,41 @@ namespace OnlineShoe.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("Order_date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Total_order")
-                        .HasColumnType("int");
-
-                    b.Property<string>("User_id")
+                    b.Property<string>("DeliveryAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Order_date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("ShippingFee")
+                        .HasPrecision(16, 2)
+                        .HasColumnType("decimal(16,2)");
+
+                    b.Property<string>("Userid")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("Userid");
 
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.Order_item", b =>
+            modelBuilder.Entity("OnlineShoe.Model.Orderitem", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -282,13 +301,13 @@ namespace OnlineShoe.Model.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Order_Id")
+                    b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Shoe_Id")
+                    b.Property<int>("ShoeId")
                         .HasColumnType("int");
 
-                    b.Property<double>("Total_price")
+                    b.Property<double>("Totalprice")
                         .HasColumnType("float");
 
                     b.Property<int>("quantity")
@@ -296,9 +315,9 @@ namespace OnlineShoe.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Order_Id");
+                    b.HasIndex("OrderId");
 
-                    b.HasIndex("Shoe_Id");
+                    b.HasIndex("ShoeId");
 
                     b.ToTable("OrderItems");
                 });
@@ -345,7 +364,7 @@ namespace OnlineShoe.Model.Migrations
                     b.ToTable("Shoes");
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.Shoe_Review", b =>
+            modelBuilder.Entity("OnlineShoe.Model.ShoeReview", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -354,16 +373,15 @@ namespace OnlineShoe.Model.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Comment")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Created_at")
+                    b.Property<DateTime>("Createdat")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<int>("Shoe_Id")
+                    b.Property<int>("ShoeId")
                         .HasColumnType("int");
 
                     b.Property<string>("userId")
@@ -372,12 +390,12 @@ namespace OnlineShoe.Model.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Shoe_Id");
+                    b.HasIndex("ShoeId");
 
-                    b.ToTable("Shoe_Reviews");
+                    b.ToTable("ShoeReviews");
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.ShoppingCart", b =>
+            modelBuilder.Entity("OnlineShoe.Model.ShoppingCartItems", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -388,10 +406,7 @@ namespace OnlineShoe.Model.Migrations
                     b.Property<int>("Quatity")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShoeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("shodId")
+                    b.Property<int?>("ShoeId")
                         .HasColumnType("int");
 
                     b.Property<string>("shoppingId")
@@ -456,18 +471,29 @@ namespace OnlineShoe.Model.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.Order_item", b =>
+            modelBuilder.Entity("OnlineShoe.Model.Order", b =>
+                {
+                    b.HasOne("OnlineShoe.Model.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("Userid")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("OnlineShoe.Model.Orderitem", b =>
                 {
                     b.HasOne("OnlineShoe.Model.Order", "Order")
-                        .WithMany("order_Items")
-                        .HasForeignKey("Order_Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany("orderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("OnlineShoe.Model.Shoe", "Shoe")
                         .WithMany("Order_Items")
-                        .HasForeignKey("Shoe_Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
@@ -484,24 +510,22 @@ namespace OnlineShoe.Model.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.Shoe_Review", b =>
+            modelBuilder.Entity("OnlineShoe.Model.ShoeReview", b =>
                 {
                     b.HasOne("OnlineShoe.Model.Shoe", "Shoe")
                         .WithMany("Reviews")
-                        .HasForeignKey("Shoe_Id")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .HasForeignKey("ShoeId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Shoe");
                 });
 
-            modelBuilder.Entity("OnlineShoe.Model.ShoppingCart", b =>
+            modelBuilder.Entity("OnlineShoe.Model.ShoppingCartItems", b =>
                 {
                     b.HasOne("OnlineShoe.Model.Shoe", "Shoe")
                         .WithMany()
-                        .HasForeignKey("ShoeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ShoeId");
 
                     b.Navigation("Shoe");
                 });
@@ -513,7 +537,7 @@ namespace OnlineShoe.Model.Migrations
 
             modelBuilder.Entity("OnlineShoe.Model.Order", b =>
                 {
-                    b.Navigation("order_Items");
+                    b.Navigation("orderItems");
                 });
 
             modelBuilder.Entity("OnlineShoe.Model.Shoe", b =>

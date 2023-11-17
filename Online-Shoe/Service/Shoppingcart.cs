@@ -9,11 +9,11 @@ namespace Online_Shoe.Service
 
         private readonly ShoeDbContext _Context;
         public string ShoppingCartId { get; set; }
-        public List<ShoppingCart> shoppingCart { get; set; }
+        public List<ShoppingCartItems> shoppingCartItems { get; set; }
 
-        public Shoppingcart(ShoeDbContext context)
+        public Shoppingcart(ShoeDbContext dbcontext)
         {
-            _Context = context;
+            _Context = dbcontext;
         }
         public static Shoppingcart GetShoppingCart(IServiceProvider serviceProvider)
         {
@@ -28,52 +28,47 @@ namespace Online_Shoe.Service
 
         public void AddItemtocart(Shoe shoe)
         {
-            var shoppingCarts = _Context.ShoppingCarts.FirstOrDefault(b => b.Shoe.Id == shoe.Id
-                                                    && b.shoppingId == ShoppingCartId);
-            if (shoppingCarts == null)
-            {
-                shoppingCarts = new ShoppingCart
+            
+                var shoppingCarts = _Context.ShoppingCarts.FirstOrDefault(b => b.Shoe.Id == shoe.Id
+                                                        && b.shoppingId == ShoppingCartId);
+                if (shoppingCarts == null)
                 {
-                    shoppingId = ShoppingCartId,
-                    Shoe = shoe,
-                    Quatity = 1
+                    shoppingCarts = new ShoppingCartItems
+                    {
+                        shoppingId = ShoppingCartId,
+                        Shoe = shoe,
+                        Quatity = 1
 
-                };
-                _Context.ShoppingCarts.Add(shoppingCarts);
-            }
-            else
-            {
-                shoppingCarts.Quatity++;
-            }
-            _Context.SaveChanges();
-        }
-        public void RemoveItemFrmCart(Shoe shoe)
-        {
-            var shoppingcarts = _Context.ShoppingCarts.FirstOrDefault(b => b.Shoe.Id == shoe.Id
-                                                            && b.shoppingId == ShoppingCartId);
-            if (shoppingcarts != null)
-            {
-                if (shoppingcarts.Quatity > 1)
-                {
-                    shoppingcarts.Quatity--;
+                    };
+                    _Context.ShoppingCarts.Add(shoppingCarts);
                 }
                 else
                 {
-                    _Context.ShoppingCarts.Remove(shoppingcarts);
+                    shoppingCarts.Quatity++;
                 }
-                _Context.SaveChanges();
-            }
-
-
+            
+            _Context.SaveChanges();
         }
 
-        public List<ShoppingCart> GetshoppingCartItems()
+        public List<ShoppingCartItems> GetshoppingCartItems()
+        { 
+               var shoppingCartItems = _Context.ShoppingCarts
+                    .Where(s => s.shoppingId == ShoppingCartId)
+                    .Include(b => b.Shoe)
+                    .ToList();
+            if (shoppingCartItems == null)
+            { return null!; }
+            return shoppingCartItems;
+        }
+        public double GetshoppingCartTotal()
         {
-            return shoppingCart ?? (shoppingCart = _Context.ShoppingCarts.Where
-                (s => s.shoppingId == ShoppingCartId).Include(b => b.Shoe).ToList());
+            var total = _Context.ShoppingCarts
+        .Where(s => s.shoppingId == ShoppingCartId)
+        .Select(b => b.Shoe.Price * b.Quatity)
+        .Sum();
+           
+            return total;
         }
-        public double GetshoppingCartTotal() => _Context.ShoppingCarts.Where
-           (s => s.shoppingId == ShoppingCartId).Select(b => b.Shoe.Price * b.Quatity).Sum();
 
         public async Task clearShoppingCartAsync()
         {

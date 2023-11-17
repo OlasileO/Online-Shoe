@@ -21,8 +21,10 @@ namespace Online_Shoe.Helper
             CreateMap<Category, UpdateCategoryDto>().ReverseMap();
 
             //ShoeReview
-            CreateMap<Shoe_Review,ShoeReviewCreateDto>().ReverseMap();
-            CreateMap<Shoe_Review, ShoeReviewDto>().ReverseMap();
+            CreateMap<ShoeReview,ShoeReviewCreateDto>().ReverseMap();
+            CreateMap<ShoeReview, ShoeReviewDto>().ReverseMap();
+
+           
         }
     }
 }

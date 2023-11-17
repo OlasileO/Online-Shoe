@@ -32,7 +32,7 @@ builder.Services.AddControllers().AddJsonOptions(x =>
 });
 builder.Services.AddScoped<IShoeRepository, ShoeRepository>();
 builder.Services.AddScoped<IcategoryRepository, CategoryRepository>();
-builder.Services.AddScoped<IShoeReview, ShoeReview>();
+builder.Services.AddScoped<IShoeReview, ShoeReviewRepository>();
 builder.Services.AddScoped<IorderRepository, OrderRepository>();
 builder.Services.AddScoped<IAuthRepo, AuthRepo>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -65,13 +65,14 @@ builder.Services.AddAuthentication(options =>
          IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWTKey:Secret"]!))
      };
  });
-//builder.Services.AddMemoryCache();
-//builder.Services.AddSession(option =>
-//{
-//    option.IdleTimeout = TimeSpan.Zero;
-//    option.Cookie.HttpOnly = true;
-//    option.Cookie.IsEssential = true;
-//});
+builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -95,6 +96,7 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AllowAll");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

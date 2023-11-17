@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Repository.Abstract
 {
-    public interface IShoeReview:IGenericRepository<Shoe_Review>
+    public interface IShoeReview:IGenericRepository<ShoeReview>
     {
         //ICollection<Shoe_Review> GetReviews();
         //Shoe_Review GetReview(int id);

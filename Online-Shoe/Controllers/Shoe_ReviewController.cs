@@ -72,7 +72,7 @@ namespace Online_Shoe.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
        
-            var categoryDTO = _mapper.Map<Shoe_Review>(reviewCreate);
+            var categoryDTO = _mapper.Map<OnlineShoe.Model.ShoeReview>(reviewCreate);
             categoryDTO.userId = user;
             categoryDTO.Shoe = await _shoeRepository.GetById(reviewCreate.Shoe_Id);
             await _shoeReview.AddAsync(categoryDTO);

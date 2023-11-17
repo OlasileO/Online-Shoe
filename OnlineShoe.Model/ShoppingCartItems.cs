@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Model
 {
-    public class ShoppingCart
+    public class ShoppingCartItems
     {
         public int Id { get; set; }
-        public int shodId { get; set; }
-        public Shoe Shoe { get; set; }  
+        public Shoe Shoe { get; set; } 
+        public int? ShoeId { get; set; }
         public int Quatity { get; set; }    
         public string shoppingId {get; set; }
     }

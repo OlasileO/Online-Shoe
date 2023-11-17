@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace OnlineShoe.Repository.Abstract
 {
-    public interface IorderRepository
+    public interface IorderRepository:IGenericRepository<Order>
     {
-        Task StoreOrderAysnc(List<ShoppingCart> items, string userId);
+        Task StoreOrderAysnc(List<ShoppingCartItems> items, string userId);
 
-        Task<List<Order>> GetOrderByUserIdAndRoleAsync(string userRole);
+        Task<List<Order>> GetOrderByUserIdAndRoleAsync(string userId, string userRole);
+       
     }
 }
