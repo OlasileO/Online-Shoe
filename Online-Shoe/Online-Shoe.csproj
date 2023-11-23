@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>Online_Shoe</RootNamespace>
     <UserSecretsId>521355c1-a33d-418b-943a-a6f8f5175a31</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerComposeProjectPath>..\docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,6 +24,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.0.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.4" />
     <PackageReference Include="SendGrid" Version="9.28.1" />
     <PackageReference Include="Serilog" Version="3.0.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />

@@ -1,0 +1,40 @@
+version: '3.4'
+
+networks:
+  backend:
+
+volumes:
+  mssql-data:
+
+
+services:
+  
+  onlineshoedb:
+    container_name: onlineshoe-db
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+       - 8010:1433
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=Pasword@1234&
+    networks:
+      - backend
+    volumes:
+      - ./data:/var/opt/mssql/data
+
+  online-shoe:
+    container_name: oinlineshoe-webapi
+    image: ${DOCKER_REGISTRY-}onlineshoe
+    build:
+      context: .
+      dockerfile: Online-Shoe/Dockerfile
+    ports:
+      - 8004:84
+    networks:
+      - backend
+    environment:
+     - DB_HOST=onlineshoedb
+     - DB_NAME=OnlineShoe
+     - DB_SA_PASSWORD=Pasword@1234&
+
+  

@@ -1,9 +1,6 @@
-using IdentityModel;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Online_Shoe.Service;
 using OnlineShoe.Model;
@@ -19,8 +16,14 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<ShoeDbContext>(options => options.UseSqlServer(
-builder.Configuration.GetConnectionString("conn")));
+//builder.Services.AddDbContext<ShoeDbContext>(options => options.UseSqlServer(
+//builder.Configuration.GetConnectionString("conn")));
+/* Database Context Dependency Injection */
+var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+var connectionString = $"Data Source={dbHost};Initial Catalog={dbName};User ID=sa;Password={dbPassword};Encrypt=false";
+builder.Services.AddDbContext<ShoeDbContext>(opt => opt.UseSqlServer(connectionString));
 
 builder.Services.AddIdentity<AppUser, IdentityRole>().AddDefaultTokenProviders().AddEntityFrameworkStores<ShoeDbContext>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();

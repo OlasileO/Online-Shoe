@@ -7,7 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Online-Shoe", "Online-Shoe\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShoe.Model", "OnlineShoe.Model\OnlineShoe.Model.csproj", "{4534AE34-7A15-451E-BF38-024B047D6F66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShoe.Repository", "OnlineShoe.Repository\OnlineShoe.Repository.csproj", "{7DD78B39-FA8B-4537-B714-C45117628DEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShoe.Repository", "OnlineShoe.Repository\OnlineShoe.Repository.csproj", "{7DD78B39-FA8B-4537-B714-C45117628DEA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{A31A1F77-5572-4A11-9A6E-1DCC6E00BC32}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DD78B39-FA8B-4537-B714-C45117628DEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A31A1F77-5572-4A11-9A6E-1DCC6E00BC32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A31A1F77-5572-4A11-9A6E-1DCC6E00BC32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A31A1F77-5572-4A11-9A6E-1DCC6E00BC32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A31A1F77-5572-4A11-9A6E-1DCC6E00BC32}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

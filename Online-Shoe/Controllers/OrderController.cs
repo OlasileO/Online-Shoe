@@ -39,7 +39,7 @@ namespace Online_Shoe.Controllers
             {
                 return BadRequest("User not authenticated");
             }
-            string  userRole = User.FindFirstValue(ClaimTypes.Role);
+            string  userRole = User.FindFirstValue(ClaimTypes.Role)!;
             var allorders = await _orderRepository.GetOrderByUserIdAndRoleAsync(userId,userRole);
             return Ok(allorders);
         }
@@ -89,7 +89,7 @@ namespace Online_Shoe.Controllers
                 // Return the created order
                 return Ok("Order completed successfully");
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 // Log the exception or handle it as needed
                 return StatusCode(500, "An error occurred while completing the order.");
